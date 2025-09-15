@@ -3,6 +3,12 @@
 * pip install python-dotenv==1.1.1
 * pip install rich==14.1.0
 * pip install typer==0.17.4
+* pip install questionary==2.1.1
+* pip install inquirerpy==0.3.4 # lib quá cũ ko dùng 
+* pip install simple-term-menu==1.6.6 # lib quá cũ
+
+# remove package
+* pip uninstall inquirerpy simple-term-menu
 
 # used
 python registrar.py --help # view list command exist

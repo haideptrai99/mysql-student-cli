@@ -1,4 +1,7 @@
 import typer
+from rich.console import Console
+from rich.prompt import Prompt
+
 from database import (
     add_a_new_course,
     add_a_prerequisite,
@@ -6,7 +9,6 @@ from database import (
     initialize_data,
     reset,
 )
-from rich.console import Console
 
 app = typer.Typer()
 console = Console()
@@ -46,6 +48,41 @@ def reset_database(with_data: bool = True):
             typer.echo("Data initialized successfully.")
     else:
         typer.echo("Database reset aborted.")
+
+
+@app.command()
+def reset_database_new() -> None:
+    """
+    Reset lại database với menu có màu sắc.
+    Người dùng chọn:
+    1 = Reset data
+    2 = Reset + Insert data
+    3 = Cancel
+    """
+
+    while True:
+        console.print("\n[bold white]Please choose your input:[/bold white]")
+        console.print("[green]1.[/green] Reset data")
+        console.print("[yellow]2.[/yellow] Reset and insert data")
+        console.print("[red]3.[/red] Cancel")
+
+        choice = Prompt.ask("Enter your choice (1-3)", choices=["1", "2", "3"])
+
+        if choice == "1":
+            reset()
+            console.print("[bold green]Database reset successfully.[/bold green]")
+            break
+
+        elif choice == "2":
+            reset()
+            console.print("[bold green]Database reset successfully.[/bold green]")
+            initialize_data()
+            console.print("[bold cyan]Data initialized successfully.[/bold cyan]")
+            break
+
+        elif choice == "3":
+            console.print("[bold red]Database reset aborted.[/bold red]")
+            break
 
 
 def run():
