@@ -1,5 +1,11 @@
 import typer
-from database import add_a_new_course, add_a_prerequisite, add_a_student, reset
+from database import (
+    add_a_new_course,
+    add_a_prerequisite,
+    add_a_student,
+    initialize_data,
+    reset,
+)
 from rich.console import Console
 
 app = typer.Typer()
@@ -25,12 +31,19 @@ def add_prereq(course: str, prereq: str, min_grade: int = 50):
 
 
 @app.command()
-def reset_database():
+def reset_database(with_data: bool = True):
+    # --with-data
+    # --no-with-data
+
     answer = input("This will delete all the data. Are you sure? (y/n): ")
 
     if answer.strip().lower() == "y":
         reset()
         typer.echo("Database reset successfully.")
+
+        if with_data:
+            initialize_data()
+            typer.echo("Data initialized successfully.")
     else:
         typer.echo("Database reset aborted.")
 
