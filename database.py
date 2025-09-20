@@ -1,8 +1,9 @@
 from os import environ as env
 
-import data
 from dotenv import load_dotenv
 from mysql.connector import Error, connect
+
+import data
 from mysql_highlight import print_query
 
 load_dotenv()
@@ -24,13 +25,13 @@ def get_connection():
         raise RuntimeError(f"DB connect failed: {e}") from e
 
 
-def query(connection, query, data=None, fetch=None, manyQuery=False, showQuery=False):
+def query(connection, sql, data=None, fetch=False, manyQuery=False, showQuery=False):
     cursor = connection.cursor()
 
     if manyQuery:
-        cursor.executemany(query, data)
+        cursor.executemany(sql, data)
     else:
-        cursor.execute(query, data)
+        cursor.execute(sql, data)
 
     if showQuery:
         print_query(cursor.statement)
@@ -75,14 +76,14 @@ def add_a_student(first_name, last_name, unix_id):
             "INSERT INTO students (first_name, last_name, unix_id) VALUES (%s, %s, %s);"
         )
         data = (first_name, last_name, unix_id)
-        query(connection=conn, query=sql, data=data, showQuery=True)
+        query(connection=conn, sql=sql, data=data, showQuery=True)
 
 
 def add_a_new_course(moniker, name, department):
     with get_connection() as conn:
         sql = "INSERT INTO courses (moniker, name, department) VALUES (%s, %s, %s);"
         data = (moniker, name, department)
-        query(connection=conn, query=sql, data=data, showQuery=True)
+        query(connection=conn, sql=sql, data=data, showQuery=True)
 
 
 def add_a_prerequisite(course, prereq, min_grade):
@@ -91,26 +92,34 @@ def add_a_prerequisite(course, prereq, min_grade):
             "INSERT INTO prerequisites (course, prereq, min_grade) VALUES (%s, %s, %s);"
         )
         data = (course, prereq, min_grade)
-        query(connection=conn, query=sql, data=data, showQuery=True)
+        query(connection=conn, sql=sql, data=data, showQuery=True)
 
 
 def initialize_data():
     with get_connection() as conn:
         query(
             connection=conn,
-            query="INSERT INTO students (first_name, last_name, unix_id) VALUES (%s, %s, %s);",
+            sql="INSERT INTO students (first_name, last_name, unix_id) VALUES (%s, %s, %s);",
             data=data.students,
             manyQuery=True,
         )
         query(
             connection=conn,
-            query="INSERT INTO courses (moniker, name, department) VALUES (%s, %s, %s);",
+            sql="INSERT INTO courses (moniker, name, department) VALUES (%s, %s, %s);",
             data=data.courses,
             manyQuery=True,
         )
         query(
             connection=conn,
-            query="INSERT INTO prerequisites (course, prereq, min_grade) VALUES (%s, %s, %s);",
+            sql="INSERT INTO prerequisites (course, prereq, min_grade) VALUES (%s, %s, %s);",
             data=data.prerequisites,
             manyQuery=True,
         )
+
+
+def show_prerequisites_for(course):
+    with get_connection() as conn:
+        sql = "SELECT prereq, min_grade FROM prerequisites WHERE course = %s"
+        data = (course,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)

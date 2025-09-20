@@ -8,6 +8,7 @@ from database import (
     add_a_student,
     initialize_data,
     reset,
+    show_prerequisites_for,
 )
 
 app = typer.Typer()
@@ -30,6 +31,13 @@ def add_course(moniker: str, name: str, department: str):
 def add_prereq(course: str, prereq: str, min_grade: int = 50):
     # python registrar.py add-prereq cs102 cs101 --min-grade 70
     add_a_prerequisite(course, prereq, min_grade)
+
+
+@app.command()
+def show_prereqs(course: str):
+    rs = show_prerequisites_for(course)
+    print(type(rs[0][0]))
+    print(rs[0])
 
 
 @app.command()
