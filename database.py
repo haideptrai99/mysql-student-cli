@@ -123,3 +123,19 @@ def show_prerequisites_for(course):
         data = (course,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def show_students_by(last_name):
+    with get_connection() as conn:
+        sql = "SELECT first_name, last_name, unix_id FROM students WHERE last_name like %s;"
+        data = ("%" + last_name + "%",)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def show_courses_by(department):
+    with get_connection() as conn:
+        sql = "SELECT moniker, name, department FROM courses WHERE department = %s;"
+        data = (department,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)

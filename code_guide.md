@@ -21,7 +21,8 @@ python registrar.py add-prereq cs102 cs101 --min-grade 70
 python registrar.py reset-database # default with-data=True reset with data insert
 python registrar.py reset-database --no-with-data # with-data=False reset with no data
 python registrar.py show-prereqs MATH209
-
+python registrar.py show-students Doe
+python registrar.py show-courses Economics
 # Table link:
 
 # - students should store

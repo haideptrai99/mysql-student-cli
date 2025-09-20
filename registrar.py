@@ -9,7 +9,9 @@ from database import (
     add_a_student,
     initialize_data,
     reset,
+    show_courses_by,
     show_prerequisites_for,
+    show_students_by,
 )
 
 app = typer.Typer()
@@ -50,6 +52,20 @@ def show_prereqs(course: str):
         data=show_prerequisites_for(course),
         in_color="yellow",
     )
+
+
+@app.command()
+def show_students(last_name: str):
+    data = show_students_by(last_name)
+
+    pretty_table(["First Name", "Last Name", "UnixID"], data=data, in_color="blue")
+
+
+@app.command()
+def show_courses(department: str):
+    data = show_courses_by(department)
+
+    pretty_table(["Moniker", "Name", "Department"], data=data, in_color="green")
 
 
 @app.command()
