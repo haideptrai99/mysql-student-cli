@@ -1,6 +1,7 @@
 import typer
 from rich.console import Console
 from rich.prompt import Prompt
+from rich.table import Table
 
 from database import (
     add_a_new_course,
@@ -13,6 +14,15 @@ from database import (
 
 app = typer.Typer()
 console = Console()
+
+
+def pretty_table(with_headers, data, in_color):
+    table = Table(*with_headers, show_header=True, header_style=f"bold {in_color}")
+
+    for row in data:
+        table.add_row(*map(str, row))
+
+    console.print(table)
 
 
 @app.command()
@@ -35,9 +45,11 @@ def add_prereq(course: str, prereq: str, min_grade: int = 50):
 
 @app.command()
 def show_prereqs(course: str):
-    rs = show_prerequisites_for(course)
-    print(type(rs[0][0]))
-    print(rs[0])
+    pretty_table(
+        ["Prerequisites", "Minimum Grade"],
+        data=show_prerequisites_for(course),
+        in_color="yellow",
+    )
 
 
 @app.command()

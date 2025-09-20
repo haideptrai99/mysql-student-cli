@@ -36,7 +36,9 @@ target-version = "py312"
 # -------------------------------------------------------------------
 [tool.ruff.lint]
 # [SỬA] Thêm các bộ quy tắc: FA (FastAPI), S (Security/Bandit), TID (Pytest), ARG (Unused Arguments)
-select = ["E", "W", "F", "I", "B", "UP", "SIM", "PYI", "A", "C4", "T20", "FA", "S", "TID", "ARG"]
+#select = ["E", "W", "F", "I", "B", "UP", "SIM", "PYI", "A", "C4", "T20", "FA", "S", "TID", "ARG"]
+# remove T20 cho phép print
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "PYI", "A", "C4", "FA", "S", "TID", "ARG"]
 ignore = [
     "E501",  # Line too long, handled by formatter
     "B008",  # Function call in default argument (common in FastAPI Depends)
