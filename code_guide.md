@@ -24,6 +24,7 @@ python registrar.py show-prereqs MATH209
 python registrar.py show-students Doe
 python registrar.py show-courses Economics
 python registrar.py enroll ab1 cs304
+python registrar.py grade ab1 cs304 97 # grade là điểm
 # Table link:
 
 # - students should store

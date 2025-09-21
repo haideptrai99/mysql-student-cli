@@ -147,3 +147,11 @@ def enroll_student(student, course, year):
         data = (student, course, year)
 
         return query(connection=conn, sql=sql, data=data, showQuery=True)
+
+
+def set_grade(student, course, grade, year):
+    with get_connection() as conn:
+        sql = "UPDATE student_course SET grade = %s WHERE student = %s AND course = %s AND year = %s;"
+        data = (grade, student, course, year)
+
+        return query(connection=conn, sql=sql, data=data, showQuery=True)

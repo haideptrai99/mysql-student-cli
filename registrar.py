@@ -12,6 +12,7 @@ from database import (
     enroll_student,
     initialize_data,
     reset,
+    set_grade,
     show_courses_by,
     show_prerequisites_for,
     show_students_by,
@@ -74,6 +75,11 @@ def show_courses(department: str):
 @app.command()
 def enroll(student: str, course: str, year: int = datetime.now().year):
     enroll_student(student, course, year)
+
+
+@app.command()
+def grade(student: str, course: str, grade: int, year: int = datetime.now().year):
+    set_grade(student, course, grade, year)
 
 
 @app.command()
