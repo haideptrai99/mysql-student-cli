@@ -28,3 +28,16 @@ CREATE TABLE prerequisites
     FOREIGN KEY (prereq) REFERENCES courses (moniker),
     CHECK (min_grade >= 0 AND min_grade <= 100)
 );
+
+CREATE TABLE student_course
+(
+    id      INTEGER PRIMARY KEY AUTO_INCREMENT,
+    student VARCHAR(10) NOT NULL,
+    course  VARCHAR(10) NOT NULL,
+    year    INTEGER,
+    grade   INTEGER,
+    FOREIGN KEY (student) REFERENCES students (unix_id),
+    FOREIGN KEY (course) REFERENCES courses (moniker),
+    UNIQUE (student, course, year),
+    CHECK (grade >= 0 AND grade <= 100)
+);

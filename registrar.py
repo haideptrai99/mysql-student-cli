@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import typer
 from rich.console import Console
 from rich.prompt import Prompt
@@ -7,6 +9,7 @@ from database import (
     add_a_new_course,
     add_a_prerequisite,
     add_a_student,
+    enroll_student,
     initialize_data,
     reset,
     show_courses_by,
@@ -66,6 +69,11 @@ def show_courses(department: str):
     data = show_courses_by(department)
 
     pretty_table(["Moniker", "Name", "Department"], data=data, in_color="green")
+
+
+@app.command()
+def enroll(student: str, course: str, year: int = datetime.now().year):
+    enroll_student(student, course, year)
 
 
 @app.command()

@@ -139,3 +139,11 @@ def show_courses_by(department):
         data = (department,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def enroll_student(student, course, year):
+    with get_connection() as conn:
+        sql = "INSERT INTO student_course (student, course, year) VALUES (%s, %s, %s);"
+        data = (student, course, year)
+
+        return query(connection=conn, sql=sql, data=data, showQuery=True)

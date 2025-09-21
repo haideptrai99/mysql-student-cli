@@ -23,6 +23,7 @@ python registrar.py reset-database --no-with-data # with-data=False reset with n
 python registrar.py show-prereqs MATH209
 python registrar.py show-students Doe
 python registrar.py show-courses Economics
+python registrar.py enroll ab1 cs304
 # Table link:
 
 # - students should store
