@@ -174,3 +174,10 @@ def set_grade(student, course, grade, year):
         data = (grade, student, course, year)
 
         return query(connection=conn, sql=sql, data=data, showQuery=True)
+
+
+def unenroll_student(student, course, year):
+    with get_connection() as conn:
+        sql = "DELETE FROM student_course WHERE student = %s AND course = %s AND year = %s;"
+        data = (student, course, year)
+        return query(connection=conn, sql=sql, data=data, showQuery=True)
