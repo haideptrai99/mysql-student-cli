@@ -1,4 +1,5 @@
 from os import environ as env
+from typing import Any
 
 from dotenv import load_dotenv
 from mysql.connector import Error, connect
@@ -26,7 +27,7 @@ def get_connection():
 
 
 def query(connection, sql, data=None, fetch=False, manyQuery=False, showQuery=False):
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)
 
     if manyQuery:
         cursor.executemany(sql, data)
@@ -211,7 +212,7 @@ def show_courses_a_student_is_currently_taking(student):
 #         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
 
 
-def get_transcript_for(student):
+def get_transcript_for(student: str) -> list[Any] | None:
     with get_connection() as conn:
         sql = """
             SELECT course, year, grade, (select letter
