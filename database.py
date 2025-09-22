@@ -115,6 +115,18 @@ def initialize_data():
             data=data.prerequisites,
             manyQuery=True,
         )
+        query(
+            connection=conn,
+            sql="INSERT INTO student_course (student, course, year,grade) VALUES (%s, %s, %s,%s);",
+            data=data.student_course,
+            manyQuery=True,
+        )
+        query(
+            connection=conn,
+            sql="INSERT INTO letter_grade (grade, letter) VALUES (%s, %s);",
+            data=data.letter_grades,
+            manyQuery=True,
+        )
 
 
 def show_prerequisites_for(course):
@@ -191,9 +203,23 @@ def show_courses_a_student_is_currently_taking(student):
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
 
 
+# def get_transcript_for(student):
+#     with get_connection() as conn:
+#         sql = "SELECT course, year, grade FROM student_course WHERE student = %s AND grade IS NOT NULL ORDER BY year;"
+#         data = (student,)
+
+#         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
 def get_transcript_for(student):
     with get_connection() as conn:
-        sql = "SELECT course, year, grade FROM student_course WHERE student = %s AND grade IS NOT NULL ORDER BY year;"
+        sql = """
+            SELECT course, year, grade, (select letter
+                from letter_grade as lg
+                where lg.grade <= sc.grade
+                order by lg.grade desc limit 1
+            ) as letter FROM student_course as sc WHERE student = %s AND grade IS NOT NULL ORDER BY year;
+        """
         data = (student,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)

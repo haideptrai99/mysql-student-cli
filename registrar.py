@@ -107,10 +107,10 @@ def current_courses(student: str):
 @app.command()
 def transcript(student: str):
     data = get_transcript_for(student)
-    pretty_table(["Course", "Year", "Grade"], data=data, in_color="magenta")
-    console.print(
-        f"Average GPA: {sum([row[2] for row in data]) / len(data):.2f}", style="bold"
+    pretty_table(
+        ["Course", "Year", "Grade", "Letter Grade"], data=data, in_color="magenta"
     )
+    # console.print(f"Average GPA: {sum([row[2] for row in data]) / len(data):.2f}", style="bold")
 
 
 @app.command()

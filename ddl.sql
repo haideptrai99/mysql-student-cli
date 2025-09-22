@@ -41,3 +41,10 @@ CREATE TABLE student_course
     UNIQUE (student, course, year),
     CHECK (grade >= 0 AND grade <= 100)
 );
+
+CREATE TABLE letter_grade
+(
+    grade  INTEGER    NOT NULL,
+    letter VARCHAR(1) NOT NULL,
+    check ( grade >= 0 and grade <= 100 )
+);
