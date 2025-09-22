@@ -11,6 +11,7 @@ from database import (
     add_a_student,
     check_prerequisites,
     enroll_student,
+    get_transcript_for,
     initialize_data,
     reset,
     set_grade,
@@ -101,6 +102,15 @@ def unenroll(student: str, course: str, year: int = datetime.now().year):
 def current_courses(student: str):
     data = show_courses_a_student_is_currently_taking(student)
     pretty_table(["Course", "Year"], data=data, in_color="green")
+
+
+@app.command()
+def transcript(student: str):
+    data = get_transcript_for(student)
+    pretty_table(["Course", "Year", "Grade"], data=data, in_color="magenta")
+    console.print(
+        f"Average GPA: {sum([row[2] for row in data]) / len(data):.2f}", style="bold"
+    )
 
 
 @app.command()

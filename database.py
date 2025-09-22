@@ -189,3 +189,11 @@ def show_courses_a_student_is_currently_taking(student):
         data = (student,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def get_transcript_for(student):
+    with get_connection() as conn:
+        sql = "SELECT course, year, grade FROM student_course WHERE student = %s AND grade IS NOT NULL ORDER BY year;"
+        data = (student,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)

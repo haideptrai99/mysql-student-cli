@@ -27,6 +27,7 @@ python registrar.py enroll ab1 cs304 # insert to student_course table
 python registrar.py grade ab1 cs304 97 # grade là điểm
 python registrar.py unenroll jd1 ECON255
 python registrar.py current-courses jd1
+python registrar.py transcript jd1
 # check add enroll coures
 python registrar.py enroll jd1 CS304 
 # query
