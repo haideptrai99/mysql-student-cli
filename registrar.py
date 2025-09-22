@@ -14,6 +14,7 @@ from database import (
     initialize_data,
     reset,
     set_grade,
+    show_courses_a_student_is_currently_taking,
     show_courses_by,
     show_prerequisites_for,
     show_students_by,
@@ -94,6 +95,12 @@ def grade(student: str, course: str, grade: int, year: int = datetime.now().year
 @app.command()
 def unenroll(student: str, course: str, year: int = datetime.now().year):
     unenroll_student(student, course, year)
+
+
+@app.command()
+def current_courses(student: str):
+    data = show_courses_a_student_is_currently_taking(student)
+    pretty_table(["Course", "Year"], data=data, in_color="green")
 
 
 @app.command()

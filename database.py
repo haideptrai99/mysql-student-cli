@@ -181,3 +181,11 @@ def unenroll_student(student, course, year):
         sql = "DELETE FROM student_course WHERE student = %s AND course = %s AND year = %s;"
         data = (student, course, year)
         return query(connection=conn, sql=sql, data=data, showQuery=True)
+
+
+def show_courses_a_student_is_currently_taking(student):
+    with get_connection() as conn:
+        sql = "SELECT course, year FROM student_course WHERE student = %s AND grade IS NULL;"
+        data = (student,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
