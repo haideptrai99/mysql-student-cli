@@ -23,8 +23,41 @@ python registrar.py reset-database --no-with-data # with-data=False reset with n
 python registrar.py show-prereqs MATH209
 python registrar.py show-students Doe
 python registrar.py show-courses Economics
-python registrar.py enroll ab1 cs304
+python registrar.py enroll ab1 cs304 # insert to student_course table
 python registrar.py grade ab1 cs304 97 # grade là điểm
+
+# check add enroll coures
+python registrar.py enroll jd1 CS304 
+# query
+SELECT p.prereq,p.min_grade
+                FROM prerequisites AS p
+                WHERE p.course = 'CS304'
+                AND p.prereq NOT in (
+                    SELECT sc.course
+                    FROM student_course AS sc
+                    WHERE sc.student = 'jd1'
+                        AND sc.grade > p.min_grade
+                )
+                -- LIMIT 1;
+# error  
+Student jd1 cannot take course CS304. Prerequisite not met: [('CS101', 60), ('MATH209', 50)]
+
+# check add enroll coures
+python registrar.py enroll jd1 CS101 # ok
+
+# check add enroll coures
+python registrar.py enroll jd1 MATH209
+# error 
+Student jd1 cannot take course MATH209. Prerequisite not met: [('MATH102', 50)]
+
+# check add enroll course
+python registrar.py enroll jd1 ECON255
+# error:
+Student jd1 cannot take course ECON255. Prerequisite not met: [('ECON101', 50)]
+
+# check add enroll coures with update grade
+python registrar.py grade jd1 ECON101 60
+
 # Table link:
 
 # - students should store

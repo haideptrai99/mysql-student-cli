@@ -141,12 +141,31 @@ def show_courses_by(department):
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
 
 
+def check_prerequisites(student, course):
+    with get_connection() as conn:
+        sql = """
+                SELECT p.prereq,p.min_grade
+                FROM prerequisites AS p
+                WHERE p.course = %s
+                AND p.prereq NOT in (
+                    SELECT sc.course
+                    FROM student_course AS sc
+                    WHERE sc.student = %s
+                        AND sc.grade > p.min_grade
+                )
+                -- LIMIT 1;
+            """
+        data = (course, student)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
 def enroll_student(student, course, year):
     with get_connection() as conn:
         sql = "INSERT INTO student_course (student, course, year) VALUES (%s, %s, %s);"
         data = (student, course, year)
 
-        return query(connection=conn, sql=sql, data=data, showQuery=True)
+        return query(connection=conn, sql=sql, data=data)
 
 
 def set_grade(student, course, grade, year):

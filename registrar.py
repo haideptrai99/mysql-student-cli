@@ -9,6 +9,7 @@ from database import (
     add_a_new_course,
     add_a_prerequisite,
     add_a_student,
+    check_prerequisites,
     enroll_student,
     initialize_data,
     reset,
@@ -74,7 +75,14 @@ def show_courses(department: str):
 
 @app.command()
 def enroll(student: str, course: str, year: int = datetime.now().year):
-    enroll_student(student, course, year)
+    data = check_prerequisites(student, course)
+    if data:
+        console.print(data)
+        detail = f"Student {student} cannot take course {course}. Prerequisite not met: {data}"
+        console.print(detail)
+    else:
+        enroll_student(student, course, year)
+        console.print("Add student to course successfull")
 
 
 @app.command()
@@ -145,4 +153,4 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
+    app()
