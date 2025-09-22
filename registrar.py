@@ -11,6 +11,7 @@ from database import (
     add_a_student,
     check_prerequisites,
     enroll_student,
+    get_courses_with_most_enrolled_students,
     get_transcript_for,
     initialize_data,
     reset,
@@ -210,29 +211,17 @@ def transcript(student: str):
         console.print(f"Average GPA: {total_score / len(data):.2f}", style="bold")
 
 
-# Dòng code này vốn đã đúng, bây giờ linter sẽ không còn cảnh báo sai nữa
-# total_score = sum(int(row[2]) for row in data)
-# print(total_score)
-# total_score = sum(int(row[2]) for row in data)
-# print(total_score)
-# pretty_table(
-#     ["Course", "Year", "Grade", "Letter Grade"], data=data, in_color="magenta"
-# )
+@app.command()
+def most_enrolled(n: int = 10):
+    # --n=3
 
-# if data:
-#     lenght_data = len(data)
-#     if lenght_data == 1:
-#         print(data)
-#     else:
-#         sum_grade = 0
-#         print(data)
-#         total_score = sum(int(row[2]) for row in data)
-# for item in data:
-#    print(item[0][1])
-# sum_grade += item[2]
-# console.print(
-#     f"Average GPA: {sum([row[2] for row in data]) / len(data):.2f}", style="bold"
-# )
+    data = get_courses_with_most_enrolled_students(n)
+    custom_headers = {
+        "course": "Course",
+        "name": "Name",
+        "enrolled_students": "Enrollment",
+    }
+    pretty_table(custom_headers, data=data, in_color="blue")
 
 
 @app.command()

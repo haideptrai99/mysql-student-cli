@@ -224,3 +224,18 @@ def get_transcript_for(student: str) -> list[Any] | None:
         data = (student,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def get_courses_with_most_enrolled_students(n):
+    with get_connection() as conn:
+        sql = """
+            SELECT course, c.name, count(*) AS enrolled_students
+            FROM student_course AS sc
+            JOIN courses c on sc.course = c.moniker
+            GROUP BY course
+            ORDER BY enrolled_students DESC
+            LIMIT %s
+         """
+        data = (n,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
