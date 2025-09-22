@@ -17,6 +17,7 @@ from database import (
     show_courses_by,
     show_prerequisites_for,
     show_students_by,
+    unenroll_student,
 )
 
 app = typer.Typer()
@@ -91,6 +92,11 @@ def grade(student: str, course: str, grade: int, year: int = datetime.now().year
 
 
 @app.command()
+def unenroll(student: str, course: str, year: int = datetime.now().year):
+    unenroll_student(student, course, year)
+
+
+@app.command()
 def reset_database(with_data: bool = True):
     # --with-data
     # --no-with-data
@@ -153,4 +159,4 @@ def run():
 
 
 if __name__ == "__main__":
-    app()
+    run()
