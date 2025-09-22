@@ -12,6 +12,7 @@ from database import (
     check_prerequisites,
     enroll_student,
     get_courses_with_most_enrolled_students,
+    get_top_performing_students,
     get_transcript_for,
     initialize_data,
     reset,
@@ -222,6 +223,23 @@ def most_enrolled(n: int = 10):
         "enrolled_students": "Enrollment",
     }
     pretty_table(custom_headers, data=data, in_color="blue")
+
+
+@app.command()
+def top_students(n: int = 10):
+    data = get_top_performing_students(n)
+    custom_headers = {
+        "student": "UnixId",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "courses_taken": "Courses",
+        "average_grade": "Cum. GPA",
+    }
+    pretty_table(
+        custom_headers,
+        data=data,
+        in_color="green",
+    )
 
 
 @app.command()

@@ -28,6 +28,10 @@ python registrar.py grade ab1 cs304 97 # grade là điểm
 python registrar.py unenroll jd1 ECON255
 python registrar.py current-courses jd1
 python registrar.py transcript ab1 # xếp hạng
+python registrar.py most-enrolled --help
+python registrar.py most-enrolled
+python registrar.py most-enrolled --n=1
+python registrar.py top-students
 # check add enroll coures
 python registrar.py enroll jd1 CS304 
 # query

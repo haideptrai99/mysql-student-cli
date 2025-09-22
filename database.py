@@ -239,3 +239,19 @@ def get_courses_with_most_enrolled_students(n):
         data = (n,)
 
         return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
+
+
+def get_top_performing_students(n):
+    with get_connection() as conn:
+        sql = """
+            SELECT student, s.first_name, s.last_name, count(*) as courses_taken, avg(grade) as average_grade
+            FROM student_course AS sc
+                JOIN students s on sc.student = s.unix_id
+            WHERE grade IS NOT NULL
+            GROUP BY student
+            ORDER BY average_grade DESC
+            LIMIT %s
+        """
+        data = (n,)
+
+        return query(connection=conn, sql=sql, data=data, fetch=True, showQuery=True)
